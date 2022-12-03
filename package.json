@@ -1,0 +1,15 @@
+{
+  "name": "connected-vehicle-data-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ltd/j-toml": "^1.35.3",
+    "paho-mqtt": "^1.1.0"
+  }
+}
