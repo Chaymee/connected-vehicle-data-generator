@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@ltd/j-toml": "^1.35.3",
-    "paho-mqtt": "^1.1.0"
+    "mqtt": "^4.3.7"
   }
 }

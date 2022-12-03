@@ -1,5 +1,6 @@
 [mqtt]
-hostname = "localhost"
+host = "localhost"
 port = 1883
+clientId = "connected-vehicle-data-generator"
 username = "default"
 password = "default"
