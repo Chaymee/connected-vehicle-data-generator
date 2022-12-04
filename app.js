@@ -30,7 +30,7 @@ class Vehicle {
       vehType: "vehType",
       vehID: this.vehID,
       lat: p[1],
-      lon: p[0],
+      lng: p[0],
       dir: "dir",
       status: "OK",
     }
