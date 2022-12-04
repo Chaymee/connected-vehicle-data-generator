@@ -24,8 +24,17 @@ class Vehicle {
 
   move() {
     let p = this.path[this.i]
-    let topic = `acmeResources/veh_trak/gps/v2/${this.id}/vehType/${this.vehID}/${p[1]}/${p[0]}/dir/status`
-    this.mqttClient.publish(topic, "")
+    let topic = `acmeResources/veh_trak/gps/v2/${this.id}/vehType/${this.vehID}/${p[1]}/${p[0]}/dir/OK`
+    let payload = {
+      route: this.id,
+      vehType: "vehType",
+      vehID: this.vehID,
+      lat: p[1],
+      lon: p[0],
+      dir: "dir",
+      status: "OK",
+    }
+    this.mqttClient.publish(topic, JSON.stringify(payload))
     this.count++
     console.log(`Send: ${this.count}, [${this.i}], ${topic}`)
     if (this.forward) {
