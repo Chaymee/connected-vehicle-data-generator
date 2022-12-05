@@ -2,11 +2,6 @@ import fs from 'fs';
 import TOML from '@ltd/j-toml';
 import log from 'loglevel';
 
-function isInteger(value) {
-  return typeof value === 'number' &&
-    isFinite(value) &&
-    Math.floor(value) === value;
-};
 
 function readConfig() {
   try {
@@ -21,7 +16,7 @@ function readConfig() {
         log.error(`Can NOT find route with id==${veh.route} in ${fileName}`)
         process.exit(1)
       }
-      if (!isInteger(veh.number)) {
+      if (!Number.isInteger(veh.number)) {
         log.error(`The number ${veh.number} of vehicle('${veh.type}') must be integer`)
         process.exit(1)
       }
