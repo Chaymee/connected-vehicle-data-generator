@@ -1,3 +1,5 @@
+loglevel = "debug"
+
 [mqtt]
 host = "localhost"
 port = 1883
@@ -187,3 +189,11 @@ coordinates = [
     -23.3679834,
   ],
 ]
+
+[[vehicles]]
+route = "R1"       # must be the id of one of routes
+type = "HAUL"
+number = 10
+speed = 50         # km/hour
+IDPrefix = "HW"    # the id will be from IDPrefix+"001" to IDPrefix+"010"
+reportInterval = 3 # seconds

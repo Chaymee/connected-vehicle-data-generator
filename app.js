@@ -1,15 +1,6 @@
-import fs from 'fs';
-import TOML from '@ltd/j-toml';
+import { appConfig } from './config.js'
 import mqtt from 'mqtt';
 
-function readConfig() {
-  try {
-    const data = fs.readFileSync('./config.toml', { encoding: 'utf8' });
-    return TOML.parse(data, { bigint: false })
-  } catch (err) {
-    console.log(err);
-  }
-}
 class Vehicle {
   constructor(mqttClient, route, vehID, i) {
     this.id = route.id
@@ -52,13 +43,13 @@ class Vehicle {
   }
 }
 
-const config = readConfig()
+
 // connect to broker
-const client = mqtt.connect(config.mqtt)
+const client = mqtt.connect(appConfig.mqtt)
 client.on('connect', function () {
   console.log("Connected, start to send gps messages ...")
-  let vehicle1 = new Vehicle(client, config.routes[0], "V80F", 0)
-  let vehicle2 = new Vehicle(client, config.routes[0], "VX01", 20)
+  let vehicle1 = new Vehicle(client, appConfig.routes[0], "V80F", 0)
+  let vehicle2 = new Vehicle(client, appConfig.routes[0], "VX01", 20)
   setInterval(() => { vehicle1.move(); vehicle2.move() }, 1000)
 })
 
