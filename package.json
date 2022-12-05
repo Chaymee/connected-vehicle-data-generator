@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@ltd/j-toml": "^1.35.3",
-    "mqtt": "^4.3.7"
+    "fit-curve": "^0.2.0",
+    "mqtt": "^4.3.7",
+    "spherical-geometry-js": "^3.0.0"
   }
 }

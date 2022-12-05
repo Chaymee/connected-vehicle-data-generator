@@ -1,7 +1,6 @@
-const fs = require('fs');
-const TOML = require('@ltd/j-toml');
-const mqtt = require('mqtt');
-const path = require('path');
+import fs from 'fs';
+import TOML from '@ltd/j-toml';
+import mqtt from 'mqtt';
 
 function readConfig() {
   try {
@@ -12,12 +11,12 @@ function readConfig() {
   }
 }
 class Vehicle {
-  constructor(mqttClient, route, vehID) {
+  constructor(mqttClient, route, vehID, i) {
     this.id = route.id
     this.mqttClient = mqttClient
     this.vehID = vehID
     this.count = 0
-    this.i = 0
+    this.i = i
     this.forward = true
     this.path = route.path
   }
@@ -58,8 +57,9 @@ const config = readConfig()
 const client = mqtt.connect(config.mqtt)
 client.on('connect', function () {
   console.log("Connected, start to send gps messages ...")
-  let vehicle = new Vehicle(client, config.routes[0], "V80F")
-  setInterval(() => { vehicle.move() }, 1000)
+  let vehicle1 = new Vehicle(client, config.routes[0], "V80F", 0)
+  let vehicle2 = new Vehicle(client, config.routes[0], "VX01", 20)
+  setInterval(() => { vehicle1.move(); vehicle2.move() }, 1000)
 })
 
 client.on('message', function (topic, message) {
