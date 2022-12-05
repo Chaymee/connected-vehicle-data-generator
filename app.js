@@ -18,11 +18,11 @@ class Vehicle {
     this.count = 0
     this.i = i
     this.forward = true
-    this.path = route.path
+    this.coordinates = route.coordinates
   }
 
   move() {
-    let p = this.path[this.i]
+    let p = this.coordinates[this.i]
     let topic = `acmeResources/veh_trak/gps/v2/${this.id}/vehType/${this.vehID}/${p[1]}/${p[0]}/dir/OK`
     let payload = {
       route: this.id,
@@ -37,7 +37,7 @@ class Vehicle {
     this.count++
     console.log(`Send: ${this.count}, [${this.i}], ${topic}`)
     if (this.forward) {
-      if (this.i >= this.path.length - 1) {
+      if (this.i >= this.coordinates.length - 1) {
         this.forward = false
       } else {
         this.i++

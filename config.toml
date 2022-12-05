@@ -7,8 +7,9 @@ password = "default"
 
 [[routes]]
 id = "R1"
-# path is an array of two or more GeoJSON's Positions.
-path = [
+# Like GeoJSON's, coordinates is an array of two or more GeoJSON's Positions.
+# you could map out the GPS Co-ordinates from (https://www.keene.edu/campus/maps/tool/)
+coordinates = [
   [
     119.670202,
     -23.359829,
