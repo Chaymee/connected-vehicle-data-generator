@@ -20,7 +20,7 @@ class Vehicle {
         if (supposedDistance < (curtSeg.distance / 2)) {
           break
         } else {
-          this.curtIdx++
+          this.curtIdx = this.curtIdx < (this.line.length - 1) ? this.curtIdx + 1 : 0
           supposedDistance = supposedDistance - curtSeg.distance
           realDistance = realDistance + curtSeg.distance
         }
