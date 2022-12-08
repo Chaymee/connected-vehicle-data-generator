@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ltd/j-toml": "^1.35.3",
-    "fit-curve": "^0.2.0",
     "loglevel": "^1.8.1",
     "mqtt": "^4.3.7",
     "spherical-geometry-js": "^3.0.0"
