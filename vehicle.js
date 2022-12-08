@@ -48,7 +48,7 @@ class Vehicle {
       lat: curtSeg.position.lat(),
       // lng: from -180 to 180
       lng: curtSeg.position.lng(),
-      heading: curtSeg.heading,
+      heading: Math.round(curtSeg.heading),
       status: this.status,
     }, payload)
   }
