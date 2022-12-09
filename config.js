@@ -20,8 +20,15 @@ const appConfig = {
       speed: 50,         // km/hour
       IDPrefix: "HW",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
       reportInterval: 3, // seconds
-
-    }
+    },
+    {
+      route: "R1",       // must be the id of one of routes
+      type: "WATER",
+      number: 5,
+      speed: 30,         // km/hour
+      IDPrefix: "WT",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
+      reportInterval: 3, // seconds
+    },
   ],
 
   "routes": [{
