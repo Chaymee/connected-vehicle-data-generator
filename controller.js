@@ -60,7 +60,7 @@ const vc = {
   },
 
   start: function () {
-    vc.initMqtt(() => vc.startAllVehicles())
+    vc.initMqtt(vc.startAllVehicles)
   },
 
   // start all vehicles
@@ -68,7 +68,7 @@ const vc = {
     for (const [vehId, vehicle] of Object.entries(vc.vehicles)) {
       setTimeout(() => {
         vehicle.move()
-        setInterval(() => vehicle.move(), 1000 * vehicle.reportInterval)
+        setInterval(vehicle.move, 1000 * vehicle.reportInterval)
       }, Math.random() * 1000 * vehicle.reportInterval)
     }
   },
