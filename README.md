@@ -72,6 +72,7 @@ const appConfig = {
 ## How to run the generator
 
 1. run `npm install` first to install all dependencies
+1. run `docker-compose --compatibility up -d` if you wish to start a Solace broker in your local environment
 1. run `node app.js` to start the generator
 
 ```bash
