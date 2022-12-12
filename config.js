@@ -2,7 +2,7 @@ import log from 'loglevel';
 
 const appConfig = {
   //"trace","debug","info","warn","error"
-  "logLevel": "debug",
+  "logLevel": "info",
 
   "mqtt": {
     host: "localhost",

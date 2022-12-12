@@ -26,6 +26,7 @@ const vc = {
       // create route segments for specified speed
       const distancePerSecond = vehConfig.speed * 1000 / 3600
       const line = route.segment(vc.routes[vehConfig.route], distancePerSecond)
+      log.info(`Init ${vehConfig.number} ${vehConfig.type} vehicles on route ${vehConfig.route}`)
       for (let i = 1; i <= vehConfig.number; i++) {
         const vehicle = new Vehicle()
         Object.assign(vehicle, {
@@ -65,6 +66,8 @@ const vc = {
 
   // start all vehicles
   startAllVehicles: function () {
+    log.info(`Start all ${Object.keys(vc.vehicles).length} vehicles`)
+    log.info("Press Ctrl+C to exit ...")
     for (const [vehId, vehicle] of Object.entries(vc.vehicles)) {
       setTimeout(() => {
         vehicle.move()

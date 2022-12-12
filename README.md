@@ -73,6 +73,17 @@ const appConfig = {
 
 1. run `npm install` first to install all dependencies
 1. run `node app.js` to start the generator
+
+```bash
+> node app.js
+Init 30 HAUL vehicles on route R41
+Init 5 WATER vehicles on route R41
+Init 20 HAUL vehicles on route R07
+Init 5 WATER vehicles on route R07
+Connected, ready to send mqtt messages ...
+Start all 60 vehicles
+Press Ctrl+C to exit ...
+```
  
 ## Tools to generate routes
 
