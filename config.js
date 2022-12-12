@@ -14,36 +14,36 @@ const appConfig = {
 
   "vehicles": [
     {
-      route: "R41",       // must be the id of one of routes
+      route: "R41",       // must be the id of one route
       type: "HAUL",
       number: 30,
       speed: 50,         // km/hour
-      IDPrefix: "HW",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
+      IDPrefix: "HW",    // the id will be from IDPrefix+"001" to IDPrefix+"number"
       reportInterval: 2, // seconds
     },
     {
-      route: "R41",       // must be the id of one of routes
+      route: "R41",
       type: "WATER",
       number: 5,
-      speed: 25,         // km/hour
-      IDPrefix: "WT",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
-      reportInterval: 3, // seconds
+      speed: 25,
+      IDPrefix: "WT",
+      reportInterval: 3,
     },
     {
-      route: "R07",       // must be the id of one of routes
+      route: "R07",
       type: "HAUL",
       number: 20,
-      speed: 60,         // km/hour
-      IDPrefix: "H3",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
-      reportInterval: 2, // seconds
+      speed: 60,
+      IDPrefix: "H3",
+      reportInterval: 2,
     },
     {
-      route: "R07",       // must be the id of one of routes
+      route: "R07",
       type: "WATER",
       number: 5,
-      speed: 30,         // km/hour
-      IDPrefix: "WX",    // the id will be from IDPrefix+"001" to IDPrefix+"010"
-      reportInterval: 3, // seconds
+      speed: 30,
+      IDPrefix: "WX",
+      reportInterval: 3,
     },
   ],
 
@@ -449,9 +449,8 @@ const appConfig = {
           -23.3667387
         ]
       ],
-    }
-  ]
-
+    },
+  ],
 }
 
 function checkConfig() {
