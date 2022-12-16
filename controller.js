@@ -42,7 +42,7 @@ const vc = {
 
   initMqtt: function (onConnected) {
     // connect to broker
-    vc.mqttClient = mqtt.connect(appConfig.mqtt)
+    vc.mqttClient = mqtt.connect(appConfig.mqtt.brokerUrl, appConfig.mqtt.clientOptions)
     vc.mqttClient.on('connect', function () {
       log.info("Connected, ready to send mqtt messages ...")
       onConnected()

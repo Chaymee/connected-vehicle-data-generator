@@ -5,11 +5,12 @@ const appConfig = {
   "logLevel": "info",
 
   "mqtt": {
-    host: "localhost",
-    port: 1883,
-    clientId: "connected-vehicle-data-generator",
-    username: "default",
-    password: "default",
+    brokerUrl: "localhost:1883",
+    clientOptions: {
+      clientId: "connected-vehicle-data-generator",
+      username: "solace-cloud-client",
+      password: "qedqpoqlpl5jlcus2lijkfsop",
+    }
   },
 
   "vehicles": [
