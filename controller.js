@@ -79,13 +79,24 @@ const vc = {
 
   onVehicleReport: function (payload) {
     const topic = `acmeResources/veh_trak/gps/v2/${payload.route}/${payload.vehType}/${payload.vehID}/` +
-      `${payload.lat.toFixed(5).padStart(9, "0")}/${payload.lng.toFixed(5).padStart(10, "0")}/` +
+      `${formatGpsCoord(payload.lat, "lat")}/${formatGpsCoord(payload.lng, "lng")}/` +
       `${payload.heading.toFixed(0)}/${payload.status}`
     vc.mqttClient.publish(topic, JSON.stringify(payload))
     log.debug(topic)
   }
 }
 
+function formatGpsCoord(coord, dim) {
+  let wholeLength = dim === "lng" ? 9 : 8
+  let result = coord.toFixed(5); // 5 decimal places
+  if (result[0] === '-') {
+    result = result.slice(1).padStart(wholeLength, '0');
+    result = '-' + result;
+  } else {
+    result = result.padStart(wholeLength, '0');
+  }
+  return result
+}
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
