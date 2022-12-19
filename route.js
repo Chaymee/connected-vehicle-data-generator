@@ -11,7 +11,7 @@ function segment(coordinates, maxLen) {
     let toPos = geometry.convertLatLng(coordinates[i])
     let heading = geometry.computeHeading(fromPos, toPos)
     let distance = geometry.computeDistanceBetween(fromPos, toPos)
-    while (distance > lengthToMeet) {
+    while (maxLen > 0 && distance > lengthToMeet) {
       segments.push({ position: fromPos, heading: heading, distance: lengthToMeet })
       let middlePos = geometry.computeOffset(fromPos, lengthToMeet, heading)
       fromPos = middlePos

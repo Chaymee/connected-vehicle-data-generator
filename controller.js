@@ -88,7 +88,9 @@ const vc = {
 
 function formatGpsCoord(coord, dim) {
   let wholeLength = dim === "lng" ? 9 : 8
-  let result = coord.toFixed(5); // 5 decimal places
+  // 5 decimal places should be good enough
+  // according to (https://sites.google.com/site/trescopter/Home/concepts/required-precision-for-gps-calculations)
+  let result = coord.toFixed(5);
   if (result[0] === '-') {
     result = result.slice(1).padStart(wholeLength, '0');
     result = '-' + result;

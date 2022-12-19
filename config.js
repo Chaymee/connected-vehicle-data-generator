@@ -46,6 +46,15 @@ const appConfig = {
       IDPrefix: "WX",
       reportInterval: 3,
     },
+    {
+      route: "R41",
+      type: "HAUL",
+      number: 1,
+      speed: 5,
+      IDPrefix: "H2",
+      reportInterval: 3,
+      status: "FAULT"
+    },
   ],
 
   "routes": [
