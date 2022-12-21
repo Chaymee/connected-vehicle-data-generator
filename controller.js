@@ -86,11 +86,15 @@ const vc = {
   }
 }
 
+
+// 5 decimal places should be good enough
+// according to (https://sites.google.com/site/trescopter/Home/concepts/required-precision-for-gps-calculations)
+const gpsSmallestUnit = "0.00001"
+const fixedLength = gpsSmallestUnit.split(".")[1].length // 5
 function formatGpsCoord(coord, dim) {
-  let wholeLength = dim === "lng" ? 9 : 8
-  // 5 decimal places should be good enough
-  // according to (https://sites.google.com/site/trescopter/Home/concepts/required-precision-for-gps-calculations)
-  let result = coord.toFixed(5);
+  // lng: -180~180, lat: -90~90
+  let wholeLength = dim === "lng" ? fixedLength + 4 : fixedLength + 3
+  let result = coord.toFixed(fixedLength);
   if (result[0] === '-') {
     result = result.slice(1).padStart(wholeLength, '0');
     result = '-' + result;
