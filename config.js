@@ -48,10 +48,19 @@ const appConfig = {
     },
     {
       route: "R41",
-      type: "HAUL",
+      type: "WATER",
       number: 1,
-      speed: 5,
+      speed: 0,
       IDPrefix: "H2",
+      reportInterval: 3,
+      status: "FAULT"
+    },
+    {
+      route: "R10",
+      type: "HAUL",
+      number: 2,
+      speed: 0,
+      IDPrefix: "H5",
       reportInterval: 3,
       status: "FAULT"
     },
@@ -457,6 +466,43 @@ const appConfig = {
         [
           119.6825393,
           -23.3667387
+        ]
+      ],
+    },
+    {
+      id: "R10",
+      coordinates: [
+        [
+          119.6707333,
+          -23.3599794
+        ],
+        [
+          119.6709694,
+          -23.3601074
+        ],
+        [
+          119.6707977,
+          -23.3603241
+        ],
+        [
+          119.6704973,
+          -23.3603536
+        ],
+        [
+          119.6705402,
+          -23.3602059
+        ],
+        [
+          119.6703471,
+          -23.360137
+        ],
+        [
+          119.670508,
+          -23.3599597
+        ],
+        [
+          119.6707226,
+          -23.3599006
         ]
       ],
     },
