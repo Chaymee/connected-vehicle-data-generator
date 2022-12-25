@@ -16,11 +16,12 @@ const appConfig = {
   "logLevel": "debug",
 
   "mqtt": {
-    host: "localhost",
-    port: 1883,
-    clientId: "connected-vehicle-data-generator",
-    username: "default",
-    password: "default",
+    brokerUrl: "tcp://localhost:1883",
+    clientOptions: {
+      clientId: "connected-vehicle-data-generator",
+      username: "default",
+      password: "default",
+    }
   },
 
   "vehicles": [
