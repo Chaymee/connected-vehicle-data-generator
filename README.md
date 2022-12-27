@@ -86,9 +86,21 @@ Connected, ready to send mqtt messages ...
 Start all 60 vehicles
 Press Ctrl+C to exit ...
 ```
- 
+
+### Docker version
+
+1. run `sudo docker build . -t ichen/data-generator:0.0.1` to build the Docker image
+1. run below command to create the container
+1. run `sudo docker start ichen-data-generator` to start the data generator
+
+```bash
+sudo docker create --restart unless-stopped \
+--mount type=bind,src=/home/ichen/mining-data-config.js,dst=/usr/src/app/config.js \
+--name=ichen-data-generator ichen/data-generator:0.0.1
+``` 
+
 ## Tools to generate routes
 
 You could use [Map Polygon/Polyline Tool](https://www.keene.edu/campus/maps/tool/) to draw a path on the map, then copy the "coordinates" into the config file.
 
-![tool](./polygon-tool.png)
+![tool](./polygon-tool.avif)
