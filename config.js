@@ -4,6 +4,8 @@ const appConfig = {
   //"trace","debug","info","warn","error"
   "logLevel": "info",
 
+  // acmeResources/veh_trak/gps/v2/{route}/{vehType}/{vehID}/{lat}/{lng}/{dir}/{status}
+  topicPrefix: "acmeResources/veh_trak/gps/v2/",
   "mqtt": {
     brokerUrl: "tcp://localhost:1883",
     clientOptions: {

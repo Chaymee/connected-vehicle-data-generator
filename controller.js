@@ -78,7 +78,7 @@ const vc = {
 
 
   onVehicleReport: function (payload) {
-    const topic = `acmeResources/veh_trak/gps/v2/${payload.route}/${payload.vehType}/${payload.vehID}/` +
+    const topic = `${appConfig.topicPrefix}${payload.route}/${payload.vehType}/${payload.vehID}/` +
       `${formatGpsCoord(payload.lat, "lat")}/${formatGpsCoord(payload.lng, "lng")}/` +
       `${payload.heading.toFixed(0)}/${payload.status}`
     vc.mqttClient.publish(topic, JSON.stringify(payload))
