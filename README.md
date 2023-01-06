@@ -73,7 +73,6 @@ const appConfig = {
 ## How to run the generator
 
 1. run `npm install` first to install all dependencies
-1. run `docker-compose --compatibility up -d` if you wish to start a Solace broker in your local environment
 1. run `node app.js` to start the generator
 
 ```bash
@@ -87,14 +86,17 @@ Start all 60 vehicles
 Press Ctrl+C to exit ...
 ```
 
-### Docker version
+### Build Docker Image
 
-1. run `sudo docker build . -t ichen/data-generator:0.0.1` to build the Docker image
+1. run `docker build . -t ichen/data-generator:0.0.1` to build the Docker image
+
+### Build and Run Docker Container
+
 1. run below command to create the container
-1. run `sudo docker start ichen-data-generator` to start the data generator
+1. run `docker start ichen-data-generator` to start the data generator
 
 ```bash
-sudo docker create --restart unless-stopped \
+docker create --restart unless-stopped \
 --mount type=bind,src=/home/ichen/mining-data-config.js,dst=/usr/src/app/config.js \
 --name=ichen-data-generator ichen/data-generator:0.0.1
 ``` 
