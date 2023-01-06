@@ -7,7 +7,7 @@ const appConfig = {
   // acmeResources/veh_trak/gps/v2/{route}/{vehType}/{vehID}/{lat}/{lng}/{dir}/{status}
   topicPrefix: "acmeResources/veh_trak/gps/v2/",
   "mqtt": {
-    brokerUrl: "tcp://localhost:1883",
+    brokerUrl: "tcp://solace:1883",
     clientOptions: {
       clientId: "connected-vehicle-data-generator",
       username: "default",

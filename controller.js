@@ -55,6 +55,7 @@ const vc = {
 
     vc.mqttClient.on('error', (err) => {
       log.error("Mqtt Client Error: " + err.message)
+      log.error(JSON.stringify(appConfig.mqtt.clientOptions, null, 2))
       vc.mqttClient.end()
       process.exit()
     })
