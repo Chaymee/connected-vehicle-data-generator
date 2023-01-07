@@ -42,7 +42,10 @@ const vc = {
 
   initMqtt: function (onConnected) {
     // connect to broker
+    let startTime = new Date()
+    log.info(startTime.toLocaleString() + ": start to connect to " + appConfig.mqtt.brokerUrl)
     vc.mqttClient = mqtt.connect(appConfig.mqtt.brokerUrl, appConfig.mqtt.clientOptions)
+
     vc.mqttClient.on('connect', function () {
       log.info("Connected, ready to send mqtt messages ...")
       onConnected()
@@ -52,12 +55,14 @@ const vc = {
       console.warn("Received message: " + message.toString())
     })
 
-
     vc.mqttClient.on('error', (err) => {
-      log.error("Mqtt Client Error: " + err.message)
-      log.error(JSON.stringify(appConfig.mqtt.clientOptions, null, 2))
-      vc.mqttClient.end()
-      process.exit()
+      let nowTime = new Date()
+      log.error(nowTime.toLocaleString() + ": " + err.message)
+      if (nowTime - startTime > 300 * 1000) { // 5 minutes
+        log.error("TIME OUT, unable to connect to the broker " + appConfig.mqtt.brokerUrl)
+        vc.mqttClient.end()
+        process.exit()
+      }
     })
   },
 
