@@ -29,7 +29,7 @@ function deduplicateCoordinates(coordinates) {
 
 function oneWay2RoundTrip(coordinates) {
   let result = Array.from(coordinates)
-  for (let i = coordinates.length - 2; i >= 1; i--) {
+  for (let i = coordinates.length - 2; i >= 0; i--) {
     result.push(coordinates[i])
   }
   return result

@@ -2,6 +2,40 @@ import log from 'loglevel';
 import * as geometry from 'spherical-geometry-js';
 import { vehicleController } from "./controller.js"
 
+
+function calculateNexPos(segments, curtIdx, curtPos, distance) {
+  while (distance > 0) {
+    const curtSeg = segments[curtIdx]
+    const segRemainingDistance = curtSeg.distance - geometry.computeDistanceBetween(curtSeg.position, curtPos)
+    if (distance < segRemainingDistance) {
+      curtPos = geometry.computeOffset(curtPos, distance, curtSeg.heading)
+      break
+    } else {
+      curtIdx = curtIdx < (segments.length - 1) ? curtIdx + 1 : 0
+      curtPos = segments[curtIdx].position
+      distance -= segRemainingDistance
+    }
+  }
+  return { curtIdx, curtPos }
+}
+
+function calculatePrevPos(segments, curtIdx, curtPos, distance) {
+  while (distance > 0) {
+    const curtSeg = segments[curtIdx]
+    const segRemainingDistance = geometry.computeDistanceBetween(curtSeg.position, curtPos)
+    if (distance < segRemainingDistance) {
+      curtPos = geometry.computeOffset(curtPos, distance, curtSeg.heading + 180)
+      break
+    } else {
+      curtPos = segments[curtIdx].position
+      curtIdx = curtIdx == 0 ? segments.length - 1 : curtIdx - 1
+      distance -= segRemainingDistance
+    }
+  }
+  return { curtIdx, curtPos }
+}
+
+
 class Vehicle {
   constructor(...options) {
     Object.assign(this, ...options)
@@ -9,27 +43,33 @@ class Vehicle {
     this.curtPos = this.segments[this.curtIdx].position
     if (!("status" in this)) this.status = "OK"
   }
+
   move() {
     let now = new Date()
     if (this.lastTs != 0) {
       let supposedDistance = (now.getTime() - this.lastTs) * this.speed / 3600 // this.speed*1000 / (3600*1000)
-
-      while (supposedDistance > 0) {
-        const curtSeg = this.segments[this.curtIdx]
-        const segRemainingDistance = curtSeg.distance - geometry.computeDistanceBetween(curtSeg.position, this.curtPos)
-        if (supposedDistance < segRemainingDistance) {
-          this.curtPos = geometry.computeOffset(this.curtPos, supposedDistance, curtSeg.heading)
-          break
-        } else {
-          this.curtIdx = this.curtIdx < (this.segments.length - 1) ? this.curtIdx + 1 : 0
-          this.curtPos = this.segments[this.curtIdx].position
-          supposedDistance = - segRemainingDistance
-        }
-      }
+      Object.assign(this, calculateNexPos(this.segments, this.curtIdx, this.curtPos, supposedDistance))
     }
 
     this.lastTs = now.getTime()
-    vehicleController.onVehicleReport(this.buildPayLoad())
+    const payload = this.buildPayLoad()
+    vehicleController.onVehicleReport(payload)
+    if (this.fleet) {
+      this.moveFleet(payload)
+    }
+  }
+
+  moveFleet(_payload) {
+    let curtResult = { curtIdx: this.curtIdx, curtPos: this.curtPos }
+    for (let i = 2; i <= this.number; i++) {
+      let payload = { ..._payload }
+      curtResult = calculatePrevPos(this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
+      payload.vehID = this.IDPrefix + i.toString().padStart(4, "0")
+      payload.lat = curtResult.curtPos.lat()
+      payload.lng = curtResult.curtPos.lng()
+      payload.heading = Math.round(this.segments[curtResult.curtIdx].heading)
+      vehicleController.onVehicleReport(payload)
+    }
   }
 
   buildPayLoad() {

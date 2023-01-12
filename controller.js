@@ -24,7 +24,8 @@ const vc = {
     for (const vehConfig of appConfig.vehicles) {
       const segments = vc.routesMap[vehConfig.route].segments
       log.info(`Init ${vehConfig.number} ${vehConfig.type} vehicles on route ${vehConfig.route}`)
-      for (let i = 1; i <= vehConfig.number; i++) {
+      const numberOfVehicles = vehConfig.fleet ? 1 : vehConfig.number
+      for (let i = 1; i <= numberOfVehicles; i++) {
         const vehicle = new Vehicle({
           "id": vehConfig.IDPrefix + i.toString().padStart(4, "0"),
           "segments": segments,

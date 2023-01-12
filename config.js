@@ -35,7 +35,9 @@ const appConfig = {
     {
       route: "R07",
       type: "HAUL",
-      number: 20,
+      fleet: true,
+      intervalLength: 30,
+      number: 15,
       speed: 60,
       IDPrefix: "H3",
       reportInterval: 2,
