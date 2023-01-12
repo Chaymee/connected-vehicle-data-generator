@@ -1,7 +1,7 @@
 import log from 'loglevel';
 
 import { appConfig } from './config.js'
-import * as route from './route.js'
+import { route2segments } from './route.js'
 import { Vehicle } from './vehicle.js';
 import mqtt from 'mqtt';
 
@@ -9,29 +9,26 @@ import mqtt from 'mqtt';
 // vehicle controller
 const vc = {
   mqttClient: null,
-  routes: {},
   vehicles: {},
+  routesMap: {},
 
   // initialize everything based on configuration
   init: function () {
     // init all routes
-    for (const r of appConfig.routes) {
-      let coordinates = route.deduplicateCoordinates(r.coordinates)
-      coordinates = route.oneWay2RoundTrip(coordinates)
-      vc.routes[r.id] = coordinates
+    for (const route of appConfig.routes) {
+      vc.routesMap[route.id] = route
+      route2segments(route)
     }
 
     // init vehicles
     for (const vehConfig of appConfig.vehicles) {
-      // create route segments for specified speed
-      const distancePerSecond = vehConfig.speed * 1000 / 3600
-      const line = route.segment(vc.routes[vehConfig.route], distancePerSecond)
+      const segments = vc.routesMap[vehConfig.route].segments
       log.info(`Init ${vehConfig.number} ${vehConfig.type} vehicles on route ${vehConfig.route}`)
       for (let i = 1; i <= vehConfig.number; i++) {
         const vehicle = new Vehicle({
           "id": vehConfig.IDPrefix + i.toString().padStart(4, "0"),
-          "line": line,
-          "curtIdx": getRandomInt(line.length),
+          "segments": segments,
+          "curtIdx": getRandomInt(segments.length),
         }, vehConfig)
         vc.vehicles[vehicle.id] = vehicle
       }

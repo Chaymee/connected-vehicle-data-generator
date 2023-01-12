@@ -1,28 +1,15 @@
 import * as geometry from 'spherical-geometry-js';
 
-// segment a line into a list segments which length no longer than maxLen
-function segment(coordinates, maxLen) {
+// segment a line into a list segments with heading and distance
+function segment(coordinates) {
   let segments = []
   let fromPos = geometry.convertLatLng(coordinates[0])
-  let i = 1
-
-  let lengthToMeet = maxLen
-  while (i < coordinates.length) {
+  for (let i = 1; i < coordinates.length; i++) {
     let toPos = geometry.convertLatLng(coordinates[i])
     let heading = geometry.computeHeading(fromPos, toPos)
     let distance = geometry.computeDistanceBetween(fromPos, toPos)
-    while (maxLen > 0 && distance > lengthToMeet) {
-      segments.push({ position: fromPos, heading: heading, distance: lengthToMeet })
-      let middlePos = geometry.computeOffset(fromPos, lengthToMeet, heading)
-      fromPos = middlePos
-      distance = geometry.computeDistanceBetween(fromPos, toPos)
-      lengthToMeet = maxLen
-    }
-    // distance <= lengthToMeet
     segments.push({ position: fromPos, heading: heading, distance: distance })
     fromPos = toPos
-    lengthToMeet = lengthToMeet - distance
-    i++
   }
   return segments
 }
@@ -48,4 +35,10 @@ function oneWay2RoundTrip(coordinates) {
   return result
 }
 
-export { segment, deduplicateCoordinates, oneWay2RoundTrip }
+function route2segments(route) {
+  let coords = deduplicateCoordinates(route.coordinates)
+  coords = oneWay2RoundTrip(coords)
+  route["segments"] = segment(coords)
+}
+
+export { route2segments }
