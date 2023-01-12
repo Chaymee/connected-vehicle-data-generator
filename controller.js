@@ -28,13 +28,11 @@ const vc = {
       const line = route.segment(vc.routes[vehConfig.route], distancePerSecond)
       log.info(`Init ${vehConfig.number} ${vehConfig.type} vehicles on route ${vehConfig.route}`)
       for (let i = 1; i <= vehConfig.number; i++) {
-        const vehicle = new Vehicle()
-        Object.assign(vehicle, {
+        const vehicle = new Vehicle({
           "id": vehConfig.IDPrefix + i.toString().padStart(4, "0"),
           "line": line,
           "curtIdx": getRandomInt(line.length),
-        })
-        Object.assign(vehicle, vehConfig)
+        }, vehConfig)
         vc.vehicles[vehicle.id] = vehicle
       }
     }

@@ -2,7 +2,8 @@ import log from 'loglevel';
 import { vehicleController } from "./controller.js"
 
 class Vehicle {
-  constructor() {
+  constructor(...options) {
+    Object.assign(this, ...options)
     this.lastTs = 0
     this.status = "OK"
   }
