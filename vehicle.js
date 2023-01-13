@@ -1,5 +1,6 @@
 import log from 'loglevel';
 import * as geometry from 'spherical-geometry-js';
+import rangeParser from "parse-numeric-range";
 import { vehicleController } from "./controller.js"
 
 
@@ -42,6 +43,13 @@ class Vehicle {
     this.lastTs = 0
     this.curtPos = this.segments[this.curtIdx].position
     if (!("status" in this)) this.status = "OK"
+    if (!("fleetStatus" in this)) this.fleetStatus = {}
+    for (const numRange in this.fleetStatus) {
+      const numbers = rangeParser(numRange)
+      if (numbers.length > 1) for (const num of numbers) {
+        this.fleetStatus['' + num] = this.fleetStatus[numRange]
+      }
+    }
   }
 
   move() {
@@ -68,6 +76,8 @@ class Vehicle {
       payload.lat = curtResult.curtPos.lat()
       payload.lng = curtResult.curtPos.lng()
       payload.heading = Math.round(this.segments[curtResult.curtIdx].heading)
+      payload.status = this.fleetStatus['' + i] ? this.fleetStatus['' + i] : payload.status
+
       vehicleController.onVehicleReport(payload)
     }
   }

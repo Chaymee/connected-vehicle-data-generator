@@ -38,6 +38,10 @@ const appConfig = {
       fleet: true,
       intervalLength: 30,
       number: 15,
+      fleetStatus: {
+        '3': "FAULT",
+        '9-12': "FAULT",
+      },
       speed: 60,
       IDPrefix: "H3",
       reportInterval: 2,
