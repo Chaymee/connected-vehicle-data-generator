@@ -1,3 +1,4 @@
+import log from 'loglevel';
 import * as geometry from 'spherical-geometry-js';
 
 // segment a line into a list segments with heading and distance
@@ -27,7 +28,7 @@ function deduplicateCoordinates(coordinates) {
   return result
 }
 
-function oneWay2RoundTrip(coordinates) {
+function buildRoundTripCoords(coordinates) {
   let result = Array.from(coordinates)
   for (let i = coordinates.length - 2; i >= 0; i--) {
     result.push(coordinates[i])
@@ -36,8 +37,17 @@ function oneWay2RoundTrip(coordinates) {
 }
 
 function route2segments(route) {
+  if (!route.type) route.type = "RoundTripLoop"
+
   let coords = deduplicateCoordinates(route.coordinates)
-  coords = oneWay2RoundTrip(coords)
+  if (route.type === "RoundTripLoop")
+    coords = buildRoundTripCoords(coords)
+  else if (route.type === "OneWayLoop")
+    coords.push(coords[0])
+  else {
+    log.error(`Invalid type "${route.type}" of route "${route.id}"`)
+    process.exit(1)
+  }
   route["segments"] = segment(coords)
 }
 
