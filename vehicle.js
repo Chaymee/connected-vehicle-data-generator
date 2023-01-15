@@ -4,44 +4,27 @@ import rangeParser from "parse-numeric-range";
 import { vehicleController } from "./controller.js"
 
 
-function calculateNexPos(segments, curtIdx, curtPos, distance) {
+function calculateNexPos(forward, segments, curtIdx, curtPos, distance) {
   while (distance > 0) {
     const curtSeg = segments[curtIdx]
-    const segRemainingDistance = curtSeg.distance - geometry.computeDistanceBetween(curtSeg.position, curtPos)
+    const segRemainingDistance = geometry.computeDistanceBetween(curtSeg[forward ? 'toPos' : 'fromPos'], curtPos)
     if (distance < segRemainingDistance) {
-      curtPos = geometry.computeOffset(curtPos, distance, curtSeg.heading)
+      curtPos = geometry.computeOffset(curtPos, distance, curtSeg.heading + (forward ? 0 : 180))
       break
     } else {
-      curtIdx = curtIdx < (segments.length - 1) ? curtIdx + 1 : 0
-      curtPos = segments[curtIdx].position
+      curtPos = segments[curtIdx][forward ? 'toPos' : 'fromPos']
+      curtIdx = forward ? (curtIdx < (segments.length - 1) ? curtIdx + 1 : 0) : (curtIdx == 0 ? segments.length - 1 : curtIdx - 1)
       distance -= segRemainingDistance
     }
   }
   return { curtIdx, curtPos }
 }
-
-function calculatePrevPos(segments, curtIdx, curtPos, distance) {
-  while (distance > 0) {
-    const curtSeg = segments[curtIdx]
-    const segRemainingDistance = geometry.computeDistanceBetween(curtSeg.position, curtPos)
-    if (distance < segRemainingDistance) {
-      curtPos = geometry.computeOffset(curtPos, distance, curtSeg.heading + 180)
-      break
-    } else {
-      curtPos = segments[curtIdx].position
-      curtIdx = curtIdx == 0 ? segments.length - 1 : curtIdx - 1
-      distance -= segRemainingDistance
-    }
-  }
-  return { curtIdx, curtPos }
-}
-
 
 class Vehicle {
   constructor(...options) {
     Object.assign(this, ...options)
     this.lastTs = 0
-    this.curtPos = this.segments[this.curtIdx].position
+    this.curtPos = this.segments[this.curtIdx].fromPos
     if (!("status" in this)) this.status = "OK"
     if (!("fleetStatus" in this)) this.fleetStatus = {}
     for (const numRange in this.fleetStatus) {
@@ -56,7 +39,7 @@ class Vehicle {
     let now = new Date()
     if (this.lastTs != 0) {
       let supposedDistance = (now.getTime() - this.lastTs) * this.speed / 3600 // this.speed*1000 / (3600*1000)
-      Object.assign(this, calculateNexPos(this.segments, this.curtIdx, this.curtPos, supposedDistance))
+      Object.assign(this, calculateNexPos(true, this.segments, this.curtIdx, this.curtPos, supposedDistance))
     }
 
     this.lastTs = now.getTime()
@@ -71,7 +54,7 @@ class Vehicle {
     let curtResult = { curtIdx: this.curtIdx, curtPos: this.curtPos }
     for (let i = 2; i <= this.number; i++) {
       let payload = { ..._payload }
-      curtResult = calculatePrevPos(this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
+      curtResult = calculateNexPos(false, this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
       payload.vehID = this.IDPrefix + i.toString().padStart(4, "0")
       payload.lat = curtResult.curtPos.lat()
       payload.lng = curtResult.curtPos.lng()

@@ -9,7 +9,7 @@ function segment(coordinates) {
     let toPos = geometry.convertLatLng(coordinates[i])
     let heading = geometry.computeHeading(fromPos, toPos)
     let distance = geometry.computeDistanceBetween(fromPos, toPos)
-    segments.push({ position: fromPos, heading: heading, distance: distance })
+    segments.push({ fromPos, heading, distance, toPos })
     fromPos = toPos
   }
   return segments
