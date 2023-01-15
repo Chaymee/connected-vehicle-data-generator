@@ -27,9 +27,9 @@ const appConfig = {
     {
       route: "R76",
       type: "HAUL",
-      fleet: true,
-      intervalLength: 30,
-      number: 20,
+      fleet: true,  // A fleet consists of multiple vehicles
+      intervalLength: 30, // between two vehicles
+      number: 20, // the number of vehicles of the fleet
       fleetStatus: {
         '3': "FAULT",
         '9-12': "FAULT",
@@ -86,6 +86,8 @@ const appConfig = {
     // type: "OneWayLoop",  default is "RoundTripLoop"
     {
       "id": "R41",
+      roadWidth: 10, // default is 10m
+      keepTo: "Right", // default is keep to right
       "coordinates": [
         [
           119.670202,
@@ -307,6 +309,7 @@ const appConfig = {
     },
     {
       id: "R07",
+      keepTo: "Left",
       coordinates: [
         [
           119.6793014,
