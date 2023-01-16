@@ -20,6 +20,14 @@ function calculateNexPos(forward, segments, curtIdx, curtPos, distance) {
   return { curtIdx, curtPos }
 }
 
+function getForwardPos(segments, curtIdx, curtPos, distance) {
+  return calculateNexPos(true, segments, curtIdx, curtPos, distance)
+}
+
+function getBackwardPos(segments, curtIdx, curtPos, distance) {
+  return calculateNexPos(false, segments, curtIdx, curtPos, distance)
+}
+
 class Vehicle {
   constructor(...options) {
     Object.assign(this, ...options)
@@ -39,7 +47,7 @@ class Vehicle {
     let now = new Date()
     if (this.lastTs != 0) {
       let supposedDistance = (now.getTime() - this.lastTs) * this.speed / 3600 // this.speed*1000 / (3600*1000)
-      Object.assign(this, calculateNexPos(true, this.segments, this.curtIdx, this.curtPos, supposedDistance))
+      Object.assign(this, getForwardPos(this.segments, this.curtIdx, this.curtPos, supposedDistance))
     }
 
     this.lastTs = now.getTime()
@@ -54,7 +62,7 @@ class Vehicle {
     let curtResult = { curtIdx: this.curtIdx, curtPos: this.curtPos }
     for (let i = 2; i <= this.number; i++) {
       let payload = { ..._payload }
-      curtResult = calculateNexPos(false, this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
+      curtResult = getBackwardPos(this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
       payload.vehID = this.IDPrefix + i.toString().padStart(4, "0")
       payload.lat = curtResult.curtPos.lat()
       payload.lng = curtResult.curtPos.lng()
