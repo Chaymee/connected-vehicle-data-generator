@@ -26,11 +26,7 @@ const vc = {
       log.info(`Init ${vehConfig.number} ${vehConfig.type} vehicles on route ${vehConfig.route}`)
       const numberOfVehicles = vehConfig.fleet ? 1 : vehConfig.number
       for (let i = 1; i <= numberOfVehicles; i++) {
-        const vehicle = new Vehicle({
-          "id": vehConfig.IDPrefix + i.toString().padStart(4, "0"),
-          "segments": segments,
-          "curtIdx": getRandomInt(segments.length),
-        }, vehConfig)
+        const vehicle = new Vehicle(i, segments, vehConfig)
         vc.vehicles[vehicle.id] = vehicle
       }
     }
@@ -104,10 +100,6 @@ function formatGpsCoord(coord, dim) {
     result = result.padStart(wholeLength, '0');
   }
   return result
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
 }
 
 export { vc as vehicleController }

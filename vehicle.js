@@ -29,8 +29,11 @@ function getBackwardPos(segments, curtIdx, curtPos, distance) {
 }
 
 class Vehicle {
-  constructor(...options) {
+  constructor(id, segments, ...options) {
     Object.assign(this, ...options)
+    this.id = this.IDPrefix + id.toString().padStart(4, "0")
+    this.segments = segments
+    this.curtIdx = getRandomInt(this.segments.length)
     this.lastTs = 0
     this.curtPos = this.segments[this.curtIdx].fromPos
     if (!("status" in this)) this.status = "OK"
@@ -88,6 +91,10 @@ class Vehicle {
       status: this.status,
     }
   }
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
 
 export { Vehicle }
