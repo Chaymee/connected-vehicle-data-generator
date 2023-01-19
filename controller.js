@@ -27,7 +27,7 @@ const vc = {
       const numberOfVehicles = vehConfig.fleet ? 1 : vehConfig.number
       for (let i = 1; i <= numberOfVehicles; i++) {
         const vehicle = new Vehicle(i, segments, vehConfig)
-        vc.vehicles[vehicle.id] = vehicle
+        vc.vehicles[vehicle.vehID] = vehicle
       }
     }
   },

@@ -31,17 +31,22 @@ function getBackwardPos(segments, curtIdx, curtPos, distance) {
 class Vehicle {
   constructor(id, segments, ...options) {
     Object.assign(this, ...options)
-    this.id = this.IDPrefix + id.toString().padStart(4, "0")
+    this.idStr = id.toString()
+    this.vehID = this.IDPrefix + this.idStr.padStart(4, "0")
     this.segments = segments
     this.curtIdx = getRandomInt(this.segments.length)
     this.lastTs = 0
     this.curtPos = this.segments[this.curtIdx].fromPos
     if (!("status" in this)) this.status = "OK"
-    if (!("fleetStatus" in this)) this.fleetStatus = {}
-    for (const numRange in this.fleetStatus) {
+
+    if (!("additionalPayload" in this)) this.additionalPayload = {}
+    // spread the additional payload
+    for (const numRange in this.additionalPayload) {
       const numbers = rangeParser(numRange)
-      if (numbers.length > 1) for (const num of numbers) {
-        this.fleetStatus['' + num] = this.fleetStatus[numRange]
+      for (const n of numbers) {
+        this.additionalPayload[n.toString()] = this.additionalPayload[numRange]
+        // apply additional payload there, in case there're some properties like `speed` there
+        if (numbers.includes(id)) Object.assign(this, this.additionalPayload[numRange])
       }
     }
   }
@@ -55,7 +60,7 @@ class Vehicle {
 
     this.lastTs = now.getTime()
     const payload = this.buildPayLoad()
-    vehicleController.onVehicleReport(payload)
+    vehicleController.onVehicleReport(Object.assign(payload, this.additionalPayload[this.idStr]))
     if (this.fleet) {
       this.moveFleet(payload)
     }
@@ -64,24 +69,29 @@ class Vehicle {
   moveFleet(_payload) {
     let curtResult = { curtIdx: this.curtIdx, curtPos: this.curtPos }
     for (let i = 2; i <= this.number; i++) {
-      let payload = { ..._payload }
       curtResult = getBackwardPos(this.segments, curtResult.curtIdx, curtResult.curtPos, this.intervalLength)
-      payload.vehID = this.IDPrefix + i.toString().padStart(4, "0")
-      payload.lat = curtResult.curtPos.lat()
-      payload.lng = curtResult.curtPos.lng()
-      payload.heading = Math.round(this.segments[curtResult.curtIdx].heading)
-      payload.status = this.fleetStatus['' + i] ? this.fleetStatus['' + i] : payload.status
-
-      vehicleController.onVehicleReport(payload)
+      vehicleController.onVehicleReport(Object.assign({},
+        _payload, // standard payload of the head of the fleet
+        { // id, location and heading properties of this vehicle
+          vehID: this.IDPrefix + i.toString().padStart(4, "0"),
+          lat: curtResult.curtPos.lat(),
+          lng: curtResult.curtPos.lng(),
+          heading: Math.round(this.segments[curtResult.curtIdx].heading),
+        },
+        // additional payload for this vehicle
+        this.additionalPayload[i.toString()]))
     }
   }
 
   buildPayLoad() {
+    // build the standard payload
+    const reportTime = new Date()
+    reportTime.setTime(this.lastTs)
     return {
-      time: new Date().setTime(this.lastTs).toLocaleString(),
+      time: reportTime.toLocaleString(),
       route: this.route,
       vehType: this.type,
-      vehID: this.id,
+      vehID: this.vehID,
       // lat: from -85 to 85
       lat: this.curtPos.lat(),
       // lng: from -180 to 180

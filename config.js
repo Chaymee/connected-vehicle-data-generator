@@ -17,7 +17,7 @@ const appConfig = {
 
   "vehicles": [
     {
-      route: "R41",       // must be the id of one route
+      route: "R41",       // must be the id of a route
       type: "HAUL",
       number: 30,
       speed: 50,         // km/hour
@@ -30,9 +30,17 @@ const appConfig = {
       fleet: true,  // A fleet consists of multiple vehicles
       intervalLength: 30, // between two vehicles
       number: 20, // the number of vehicles of the fleet
-      fleetStatus: {
-        '3': "FAULT",
-        '9-12': "FAULT",
+      additionalPayload: {
+        3: {
+          status: "FAULT",
+          faultType: "Hot Bearing",
+          bearingID: 8,
+        },
+        '9-12': {
+          status: "FAULT",
+          faultType: "Hot Bearing",
+          bearingID: 8,
+        },
       },
       speed: 300,
       IDPrefix: "T3",
@@ -45,6 +53,13 @@ const appConfig = {
       speed: 25,
       IDPrefix: "WT",
       reportInterval: 3,
+      additionalPayload: {
+        5: {
+          speed: 0,
+          status: "FAULT",
+          faultType: "Engine Broken",
+        }
+      }
     },
     {
       route: "R07",
@@ -61,15 +76,6 @@ const appConfig = {
       speed: 30,
       IDPrefix: "WX",
       reportInterval: 3,
-    },
-    {
-      route: "R41",
-      type: "WATER",
-      number: 1,
-      speed: 0,
-      IDPrefix: "H2",
-      reportInterval: 3,
-      status: "FAULT"
     },
     {
       route: "R10",
