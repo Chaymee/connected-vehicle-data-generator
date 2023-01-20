@@ -97,7 +97,7 @@ Press Ctrl+C to exit ...
 
 ```bash
 docker create --restart unless-stopped \
---mount type=bind,src=/home/ichen/mining-data-config.js,dst=/usr/src/app/config.js \
+--mount type=bind,src=/home/ichen/mining-data-config.js,dst=/app/config.js \
 --name=ichen-data-generator ichen/data-generator:0.0.1
 ``` 
 
