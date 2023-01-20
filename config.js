@@ -12,9 +12,8 @@ const appConfig = {
       clientId: "connected-vehicle-data-generator",
       username: "default",
       password: "default",
-    }
+    },
   },
-
   "vehicles": [
     {
       route: "R41",       // must be the id of a route
@@ -26,7 +25,7 @@ const appConfig = {
     },
     {
       route: "R76",
-      type: "HAUL",
+      type: "ORECAR",
       fleet: true,  // A fleet consists of multiple vehicles
       intervalLength: 30, // between two vehicles
       number: 20, // the number of vehicles of the fleet
@@ -34,15 +33,15 @@ const appConfig = {
         3: {
           status: "FAULT",
           faultType: "Hot Bearing",
-          bearingID: 8,
+          bearingID: 2,
         },
         '9-12': {
           status: "FAULT",
           faultType: "Hot Bearing",
-          bearingID: 8,
+          bearingID: 5,
         },
       },
-      speed: 300,
+      speed: 60,
       IDPrefix: "T3",
       reportInterval: 2,
     },
