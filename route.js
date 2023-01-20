@@ -48,7 +48,7 @@ function buildRoundTripSegments(coordinates, roadWidth, keepTo) {
     }
     else seg2 = { // last turnover
       fromPos: seg1.toPos, toPos: segments[0].fromPos,
-      heading: segments[0].heading + 90,
+      heading: seg1.heading + turningAngle,
       distance: roadWidth,
     }
 
