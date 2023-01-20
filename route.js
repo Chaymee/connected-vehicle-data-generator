@@ -33,7 +33,7 @@ function buildRoundTripSegments(coordinates, roadWidth, keepTo) {
   let segments = segment(coordinates)
 
   let seg1, seg2;
-  for (let curIdx = segments.length - 1; curIdx >= 0; curIdx--) {
+  for (let curIdx = segments.length - 1; curIdx >= -1; curIdx--) {
     if (curIdx == segments.length - 1) seg1 = { // first turnover
       fromPos: segments[curIdx].toPos,
       toPos: geometry.computeOffset(segments[curIdx].toPos, roadWidth, segments[curIdx].heading + turningAngle),
@@ -70,8 +70,10 @@ function buildRoundTripSegments(coordinates, roadWidth, keepTo) {
         heading: geometry.computeHeading(seg1.toPos, seg2.fromPos),
         distance: geometry.computeDistanceBetween(seg1.toPos, seg2.fromPos)
       })
-      segments.push(seg2)
       seg1 = { ...seg2 }
+    }
+    if (curIdx === -1) {
+      segments.push(seg1)
     }
   }
 
